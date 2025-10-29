@@ -1,4 +1,5 @@
 #include <rclcpp/rclcpp.hpp>
+#include <std_msgs/msg/u_int8_multi_array.hpp>
 #include <sensor_msgs/msg/imu.hpp>
 #include "imu_ros2/imu_parser.hpp"
 
