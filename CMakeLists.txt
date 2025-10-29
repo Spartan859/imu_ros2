@@ -5,6 +5,7 @@ project(imu_ros2)
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(std_msgs REQUIRED)
+find_package(sensor_msgs REQUIRED)
 
 # Include directories
 include_directories(include)
@@ -22,6 +23,7 @@ add_executable(imu_node ${SOURCES})
 ament_target_dependencies(imu_node
   rclcpp
   std_msgs
+  sensor_msgs
 )
 
 # Install executable
