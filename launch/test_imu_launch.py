@@ -8,11 +8,10 @@ def generate_launch_description():
             executable='imu_node',
             name='imu_node',
             output='screen',
-            parameters=[{
-                'param_name': 'param_value'  # Replace with actual parameters if needed
-            }],
-            remappings=[
-                # Add any topic remappings if necessary
+            parameters=[
+                # 可在此添加参数，例如 serial_port, baudrate 等
+                # {'serial_port': '/dev/ttyUSB0'},
+                # {'baudrate': 115200},
             ]
-        ),
+        )
     ])
