@@ -16,9 +16,11 @@ public:
 
 private:
     int state;
+    int type;
     uint16_t payload_len;
     uint16_t crc_calculated;
     uint16_t crc_received;
+    std::vector<uint8_t> header;
     std::vector<uint8_t> data_buffer;
 
     static uint16_t _crc16_compute(const std::vector<uint8_t>& data_bytes, uint16_t init = 0);
