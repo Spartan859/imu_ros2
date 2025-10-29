@@ -37,6 +37,7 @@ install(DIRECTORY include/
   DESTINATION include
 )
 
+
 # Install launch files
 install(DIRECTORY launch/
   DESTINATION share/${PROJECT_NAME}/launch
@@ -45,6 +46,11 @@ install(DIRECTORY launch/
 # Install message files
 install(DIRECTORY msg/
   DESTINATION share/${PROJECT_NAME}/msg
+)
+
+# Install Python scripts
+install(PROGRAMS scripts/imu_serial_node.py
+  DESTINATION lib/${PROJECT_NAME}
 )
 
 ament_package()
