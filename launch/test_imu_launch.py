@@ -7,11 +7,16 @@ def generate_launch_description():
             package='imu_ros2',
             executable='imu_node',
             name='imu_node',
+            output='screen'
+        ),
+        Node(
+            package='imu_ros2',
+            executable='imu_serial_node.py',
+            name='imu_serial_node',
             output='screen',
             parameters=[
-                # 可在此添加参数，例如 serial_port, baudrate 等
-                # {'serial_port': '/dev/ttyUSB0'},
-                # {'baudrate': 115200},
+                {'port': '/dev/ttyUSB0'},
+                {'baud': 115200}
             ]
         )
     ])
