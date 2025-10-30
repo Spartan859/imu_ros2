@@ -21,6 +21,20 @@ private:
     }
 
     void publish_imu_data() {
+        // 判断欧拉角是否合法（可根据实际需求调整范围）
+        double roll_val = parser_.eul[1];
+        double pitch_val = parser_.eul[0];
+        double yaw_val = parser_.eul[2];
+        bool valid = true;
+        // 例如 roll/pitch 一般在 -90~90，yaw 在 -180~180
+        if (std::isnan(roll_val) || std::isnan(pitch_val) || std::isnan(yaw_val)) valid = false;
+        if (fabs(roll_val) > 90.0 || fabs(pitch_val) > 90.0 || fabs(yaw_val) > 180.0) valid = false;
+        if (fabs(roll_val) < 1e-6 && fabs(pitch_val) < 1e-6 && fabs(yaw_val) < 1e-6) valid = false;
+        if (!valid) {
+            RCLCPP_WARN(this->get_logger(), "eul非法或全为0: roll=%.2f pitch=%.2f yaw=%.2f，数据未发布", roll_val, pitch_val, yaw_val);
+            return;
+        }
+
         auto imu_msg = sensor_msgs::msg::Imu();
         imu_msg.header.stamp = this->get_clock()->now();
         imu_msg.header.frame_id = "imu_frame";
@@ -34,9 +48,9 @@ private:
         imu_msg.angular_velocity.z = parser_.gyr[2];
 
         // 欧拉角转四元数
-        double roll = parser_.eul[1] * M_PI / 180.0;   // roll
-        double pitch = parser_.eul[0] * M_PI / 180.0;  // pitch
-        double yaw = parser_.eul[2] * M_PI / 180.0;    // yaw
+        double roll = roll_val * M_PI / 180.0;
+        double pitch = pitch_val * M_PI / 180.0;
+        double yaw = yaw_val * M_PI / 180.0;
         double cy = cos(yaw * 0.5);
         double sy = sin(yaw * 0.5);
         double cp = cos(pitch * 0.5);
