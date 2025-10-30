@@ -33,11 +33,20 @@ private:
         imu_msg.angular_velocity.y = parser_.gyr[1];
         imu_msg.angular_velocity.z = parser_.gyr[2];
 
-        // Assuming the orientation is not available, set to zero
-        imu_msg.orientation.x = 0.0;
-        imu_msg.orientation.y = 0.0;
-        imu_msg.orientation.z = 0.0;
-        imu_msg.orientation.w = 1.0;
+        // 欧拉角转四元数
+        double roll = parser_.eul[1] * M_PI / 180.0;   // roll
+        double pitch = parser_.eul[0] * M_PI / 180.0;  // pitch
+        double yaw = parser_.eul[2] * M_PI / 180.0;    // yaw
+        double cy = cos(yaw * 0.5);
+        double sy = sin(yaw * 0.5);
+        double cp = cos(pitch * 0.5);
+        double sp = sin(pitch * 0.5);
+        double cr = cos(roll * 0.5);
+        double sr = sin(roll * 0.5);
+        imu_msg.orientation.w = cr * cp * cy + sr * sp * sy;
+        imu_msg.orientation.x = sr * cp * cy - cr * sp * sy;
+        imu_msg.orientation.y = cr * sp * cy + sr * cp * sy;
+        imu_msg.orientation.z = cr * cp * sy - sr * sp * cy;
 
         publisher_->publish(imu_msg);
     }
