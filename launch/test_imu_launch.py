@@ -15,7 +15,7 @@ def generate_launch_description():
             name='imu_serial_node',
             output='screen',
             parameters=[
-                {'port': '/dev/ttyUSB0'},
+                {'port': '/dev/ttyUSB1'},
                 {'baud': 115200}
             ]
         )
