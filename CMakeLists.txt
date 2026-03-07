@@ -6,6 +6,13 @@ find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(std_msgs REQUIRED)
 find_package(sensor_msgs REQUIRED)
+find_package(rosidl_default_generators REQUIRED)
+
+# Generate custom messages
+rosidl_generate_interfaces(${PROJECT_NAME}
+  "msg/ImuData.msg"
+  DEPENDENCIES std_msgs
+)
 
 # Include directories
 include_directories(include)
@@ -25,6 +32,10 @@ ament_target_dependencies(imu_node
   std_msgs
   sensor_msgs
 )
+
+# Link generated messages to executable
+rosidl_get_typesupport_target(cpp_typesupport_target ${PROJECT_NAME} "rosidl_typesupport_cpp")
+target_link_libraries(imu_node ${cpp_typesupport_target})
 
 # Install executable
 install(TARGETS
@@ -52,5 +63,8 @@ install(DIRECTORY msg/
 install(PROGRAMS scripts/imu_serial_node.py
   DESTINATION lib/${PROJECT_NAME}
 )
+
+# Export dependencies for downstream packages
+ament_export_dependencies(rosidl_default_runtime)
 
 ament_package()
